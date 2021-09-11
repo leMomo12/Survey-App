@@ -1,9 +1,11 @@
 package com.mnowo.surveyapp.data.remote.firebase
 
 import android.util.Log.d
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.mnowo.surveyapp.R
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -33,8 +35,11 @@ class FirebaseDb @Inject constructor(){
         return status
     }
 
+
+
     suspend fun signOut() {
         Firebase.auth.signOut()
     }
+
 
 }

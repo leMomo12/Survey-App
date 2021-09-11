@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mnowo.surveyapp">
 
+    
     <application
         android:name=".SurveyApplication"
         android:allowBackup="true"

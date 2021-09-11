@@ -105,11 +105,11 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
         }
 
         if(state.error.isNotBlank()) {
-            Log.d("Login", "Error: ${state.error}")
+            Log.d("Register", "Error: ${state.error}")
         }
 
         if(state.isLoading) {
-            Log.d("Login", "isLoading")
+            Log.d("Register", "isLoading")
         }
 
     }

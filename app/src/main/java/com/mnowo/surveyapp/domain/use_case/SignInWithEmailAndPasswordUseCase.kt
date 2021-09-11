@@ -14,12 +14,11 @@ class SignInWithEmailAndPasswordUseCase @Inject constructor(
 
     operator fun invoke(email: String, password: String) : Flow<Resource<Boolean>> = flow {
         try {
-            d("Login", "Use case $email , $password ")
             emit(Resource.Loading<Boolean>())
             val status = repository.signInWithEmailAndPassword(email, password)
             emit(Resource.Success<Boolean>(status))
         } catch (e: Exception) {
-            d("Login", "$e")
+            d("Login", "Use Case Exception: $e")
             emit(Resource.Error<Boolean>(message = e.localizedMessage ?: "An unexpected error occurred"))
         }
     }
