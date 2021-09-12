@@ -19,6 +19,9 @@ class LoginViewModel @Inject constructor(
     private val signInWithEmailAndPasswordUseCase: SignInWithEmailAndPasswordUseCase
 ) : ViewModel() {
 
+    private val _passwordVisibility = mutableStateOf(false)
+    val passwordVisibility: State<Boolean> = _passwordVisibility
+
     private val _uiEnable = mutableStateOf(true)
     val uiEnable: State<Boolean> = _uiEnable
 
@@ -49,43 +52,50 @@ class LoginViewModel @Inject constructor(
         _uiEnable.value = status
     }
 
+    fun setPasswordVisibility(isVisible: Boolean) {
+        _passwordVisibility.value = isVisible
+    }
+
     fun signInWithEmailAndPassword(email: String, password: String) {
-        when {
-            email == "" -> {
-                if (password == "") {
-                    _isErrorEmail.value = true
+        viewModelScope.launch {
+            when {
+                email == "" -> {
+                    if (password == "") {
+                        _isErrorEmail.value = true
+                        _isErrorPassword.value = true
+                    } else {
+                        _isErrorEmail.value = true
+                        _isErrorPassword.value = false
+                    }
+                }
+                password == "" -> {
                     _isErrorPassword.value = true
-                } else {
-                    _isErrorEmail.value = true
+                    _isErrorEmail.value = false
+                }
+                else -> {
+                    _isErrorEmail.value = false
                     _isErrorPassword.value = false
+                    signInWithEmailAndPasswordUseCase.invoke(email, password).onEach {
+                        when (it) {
+                            is Resource.Loading -> {
+                                _state.value = LoginState(isLoading = true)
+                                d("Login", "Loading")
+                            }
+                            is Resource.Success -> {
+                                _state.value = LoginState(isLoggedIn = true)
+                                d("Login", "success")
+                            }
+                            is Resource.Error -> {
+                                _state.value = LoginState(
+                                    error = it.message ?: "An unexpected error occurred"
+                                )
+                                d("Login", "Error")
+                            }
+                        }
+                    }.launchIn(viewModelScope)
                 }
             }
-            password == "" -> {
-                _isErrorPassword.value = true
-                _isErrorEmail.value = false
-            }
-            else -> {
-                signInWithEmailAndPasswordUseCase.invoke(email, password).onEach {
-                    when (it) {
-                        is Resource.Loading -> {
-                            _state.value = LoginState(isLoading = true)
-                            d("Login", "Loading")
-                        }
-                        is Resource.Success -> {
-                            _state.value = LoginState(isLoggedIn = true)
-                            d("Login", "success")
-                        }
-                        is Resource.Error -> {
-                            _state.value = LoginState(
-                                error = it.message ?: "An unexpected error occurred"
-                            )
-                            d("Login", "Error")
-                        }
-                    }
-                }.launchIn(viewModelScope)
-            }
         }
-
     }
 
 }

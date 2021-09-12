@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.runtime.Composable
@@ -23,6 +25,8 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -70,7 +74,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
             Spacer(modifier = Modifier.padding(10.dp))
             Text(
                 text = "Please login for continue",
-                fontWeight = FontWeight.ExtraLight,
+                fontWeight = FontWeight.Light,
                 fontSize = 16.sp
             )
             Spacer(modifier = Modifier.padding(vertical = 10.dp))
@@ -89,13 +93,14 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
                     Icon(Icons.Outlined.Email, contentDescription = "")
                 },
                 singleLine = true,
-                isError = viewModel.isErrorPassword.value,
+                isError = viewModel.isErrorEmail.value,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 enabled = viewModel.uiEnable.value
             )
             Spacer(modifier = Modifier.padding(vertical = 5.dp))
             OutlinedTextField(
                 value = viewModel.passwordText.value,
+                visualTransformation = if (viewModel.passwordVisibility.value) VisualTransformation.None else PasswordVisualTransformation(),
                 onValueChange = {
                     viewModel.setPasswordText(it)
                 },
@@ -109,9 +114,19 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
                     Icon(Icons.Outlined.Lock, contentDescription = "")
                 },
                 singleLine = true,
-                isError = viewModel.isErrorEmail.value,
+                isError = viewModel.isErrorPassword.value,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                enabled = viewModel.uiEnable.value
+                enabled = viewModel.uiEnable.value,
+                trailingIcon = {
+                    val image = if (viewModel.passwordVisibility.value)
+                        Icons.Filled.Visibility
+                    else Icons.Filled.VisibilityOff
+                    IconButton(onClick = {
+                        viewModel.setPasswordVisibility(!viewModel.passwordVisibility.value)
+                    }) {
+                        Icon(imageVector  = image, "")
+                    }
+                }
             )
             Spacer(modifier = Modifier.padding(vertical = 10.dp))
             Button(
