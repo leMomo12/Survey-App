@@ -12,3 +12,4 @@ val lightBlue = Color(240,239,255)
 val darkerWhite = Color(247,247,255)
 
 val white = Color(255, 255, 255, 255)
+val grey = Color(124,124,124)

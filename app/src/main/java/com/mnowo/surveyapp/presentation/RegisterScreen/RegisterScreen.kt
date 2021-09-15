@@ -43,7 +43,9 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
         Font(R.font.istokweb_regular, FontWeight.Medium),
     )
 
-    Scaffold {
+    Scaffold(
+        scaffoldState = scaffoldState
+    ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
