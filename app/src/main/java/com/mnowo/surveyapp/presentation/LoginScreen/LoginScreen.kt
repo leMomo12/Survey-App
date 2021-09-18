@@ -49,6 +49,13 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
         Font(R.font.istokweb_regular, FontWeight.Medium),
     )
 
+    if (state.isLoggedIn) {
+        viewModel.setStateIsFinished(true)
+        if (!state.isFinished) {
+            navController.navigate(Screen.MainScreen.route)
+        }
+    }
+
     Scaffold(
         scaffoldState = scaffoldState
     ) {
@@ -124,7 +131,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
                     IconButton(onClick = {
                         viewModel.setPasswordVisibility(!viewModel.passwordVisibility.value)
                     }) {
-                        Icon(imageVector  = image, "")
+                        Icon(imageVector = image, "")
                     }
                 }
             )
@@ -161,15 +168,15 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
                     )
                 }
             }
-            if (state.isLoggedIn) {
-                navController.navigate(Screen.SplashScreen.route)
-            }
+            d("Status", "heeyyy")
         }
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(bottom = 20.dp), contentAlignment = Center
         ) {
+
+
             if (state.isLoading) {
                 d("Login", "isLoading")
                 viewModel.setUiEnable(false)
@@ -180,6 +187,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
         }
     }
 }
+
 
 
 

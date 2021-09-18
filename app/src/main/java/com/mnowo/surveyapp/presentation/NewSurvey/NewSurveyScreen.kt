@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mnowo.surveyapp.R
+import com.mnowo.surveyapp.presentation.util.Screen
 
 @Composable
 fun NewSurveyScreen(navController: NavController, viewModel: NewSurveyViewModel = hiltViewModel()) {
@@ -28,6 +29,11 @@ fun NewSurveyScreen(navController: NavController, viewModel: NewSurveyViewModel 
         Font(R.font.istokweb_regular, FontWeight.Medium),
     )
 
+    if(viewModel.successfulAdded.value) {
+        viewModel.setSuccessFullAdded(false)
+        navController.navigate(Screen.AddSurveyQuestionScreen.route)
+    }
+
     Scaffold(
         content = {
             Column(
@@ -35,7 +41,7 @@ fun NewSurveyScreen(navController: NavController, viewModel: NewSurveyViewModel 
                     .fillMaxSize()
                     .padding(10.dp),
             ) {
-                IconButton(onClick = { }) {
+                IconButton(onClick = { navController.navigate(Screen.MainScreen.route) }) {
                     Icon(
                         Icons.Default.ArrowBackIos,
                         contentDescription = "",
@@ -93,7 +99,7 @@ fun NewSurveyScreen(navController: NavController, viewModel: NewSurveyViewModel 
                 )
                 Spacer(modifier = Modifier.padding(vertical = 40.dp))
                 Button(
-                    onClick = { },
+                    onClick = { viewModel.checkInputs(viewModel.surveyTitle.value, viewModel.surveyDescription.value) },
                     Modifier
                         .fillMaxWidth()
                         .padding(start = 20.dp, end = 20.dp)

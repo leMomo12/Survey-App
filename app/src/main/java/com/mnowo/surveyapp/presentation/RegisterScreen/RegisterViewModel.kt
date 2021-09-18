@@ -55,11 +55,15 @@ class RegisterViewModel @Inject constructor(
         _passwordVisibility.value = isVisible
     }
 
+    fun setStateIsFinished(isFinished: Boolean) {
+        _state.value = RegisterState(isFinished = isFinished)
+    }
+
     fun registerWithEmailAndPassword(email: String, password: String) {
         viewModelScope.launch {
             when {
-                email == "" -> {
-                    if(password == "") {
+                email.trim() == "" -> {
+                    if(password.trim() == "") {
                         _isErrorPassword.value = true
                         _isErrorEmail.value = true
                     } else {
@@ -67,7 +71,7 @@ class RegisterViewModel @Inject constructor(
                         _isErrorPassword.value = false
                     }
                 }
-                password == "" -> {
+                password.trim() == "" -> {
                     _isErrorPassword.value = true
                     _isErrorEmail.value = false
                 }

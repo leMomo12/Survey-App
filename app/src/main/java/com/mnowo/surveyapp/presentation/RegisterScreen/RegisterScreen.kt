@@ -43,6 +43,13 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
         Font(R.font.istokweb_regular, FontWeight.Medium),
     )
 
+    if (state.isRegistered) {
+        viewModel.setStateIsFinished(true)
+        if(!state.isFinished) {
+            navController.navigate(Screen.MainScreen.route)
+        }
+    }
+
     Scaffold(
         scaffoldState = scaffoldState
     ) {
@@ -153,11 +160,6 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
                     )
                 }
             }
-
-            if (state.isRegistered) {
-                navController.navigate(Screen.SplashScreen.route)
-            }
-
         }
         Box(
             modifier = Modifier

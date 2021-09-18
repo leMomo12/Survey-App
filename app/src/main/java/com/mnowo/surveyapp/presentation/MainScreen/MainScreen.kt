@@ -28,6 +28,7 @@ import com.mnowo.surveyapp.R
 import com.mnowo.surveyapp.presentation.theme.blue
 import com.mnowo.surveyapp.presentation.theme.grey
 import com.mnowo.surveyapp.presentation.theme.white
+import com.mnowo.surveyapp.presentation.util.Screen
 
 @Composable
 fun MainScreen(navController: NavController) {
@@ -52,7 +53,7 @@ fun MainScreen(navController: NavController) {
             ) {
                 Icon(Icons.Filled.ShortText, contentDescription = "", Modifier.scale(1.3f))
                 Icon(Icons.Outlined.Add, contentDescription = "", Modifier.scale(1.3f).clickable {
-
+                    navController.navigate(Screen.NewSurveyScreen.route)
                 })
             }
         }

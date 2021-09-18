@@ -1,14 +1,20 @@
 package com.mnowo.surveyapp.presentation.NewSurvey
 
+import android.util.Log.d
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.mnowo.surveyapp.domain.model.NewSurvey
+import com.mnowo.surveyapp.domain.repository.SurveyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class NewSurveyViewModel @Inject constructor(
-
+    private val repository: SurveyRepository
 ) : ViewModel() {
 
     private val _surveyTitle = mutableStateOf("")
@@ -22,6 +28,9 @@ class NewSurveyViewModel @Inject constructor(
 
     private val _surveyDescriptionError = mutableStateOf(false)
     val surveyDescriptionError: State<Boolean> = _surveyDescriptionError
+
+    private val _successfulAdded = mutableStateOf(false)
+    val successfulAdded: State<Boolean> = _successfulAdded
 
     fun setSurveyTitleError(isError: Boolean) {
         _surveyTitleError.value = isError
@@ -37,5 +46,35 @@ class NewSurveyViewModel @Inject constructor(
 
     fun setSurveyDescription(description: String) {
         _surveyDescription.value = description
+    }
+
+    fun setSuccessFullAdded(status: Boolean) {
+        _successfulAdded.value = status
+    }
+
+    fun checkInputs(title: String, description: String) = viewModelScope.launch {
+        when {
+            title.trim() == "" -> {
+                if (description.trim() == "") {
+                    _surveyDescriptionError.value = true
+                    _surveyTitleError.value = true
+                } else {
+                    _surveyDescriptionError.value = false
+                    _surveyTitleError.value = true
+                }
+            }
+            description.trim() == "" -> {
+                _surveyDescriptionError.value = true
+                _surveyTitleError.value = false
+            }
+            else -> {
+                d("Status", "Hello")
+                _surveyDescriptionError.value = false
+                _surveyTitleError.value = false
+                val newSurvey = NewSurvey(1, title, description)
+                repository.addSurveyTitleAndDescriptionCaching(newSurvey)
+                _successfulAdded.value = true
+            }
+        }
     }
 }

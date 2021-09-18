@@ -1,13 +1,17 @@
 package com.mnowo.surveyapp.presentation.AddSurveyQuestionScreen
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,7 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.mnowo.surveyapp.common.Constants
 import com.mnowo.surveyapp.presentation.theme.blue
+import com.mnowo.surveyapp.presentation.util.Screen
 
 @Composable
 fun AddSurveyQuestionScreen(
@@ -26,12 +32,26 @@ fun AddSurveyQuestionScreen(
 ) {
     LazyColumn {
         item {
-            Text(
-                text = "Add new Survey questions",
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(start = 20.dp, top = 20.dp)
-            )
+            Row(Modifier.padding(start = 10.dp, top = 10.dp)) {
+                IconButton(onClick = { navController.navigate(Screen.NewSurveyScreen.route) }) {
+                    Icon(Icons.Default.ArrowBackIos, "")
+                }
+            }
+        }
+        item {
+                Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        text = "Add new",
+                        fontSize = 32.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(top = 20.dp)
+                    )
+                    Text(
+                        text = "Survey questions",
+                        fontSize = 32.sp,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
         }
         items(viewModel.listCount.value) {
             SurveyQuestionListItem(viewModel)
@@ -45,7 +65,7 @@ fun AddSurveyQuestionScreen(
                 FloatingActionButton(
                     onClick = { viewModel.setListCount() },
                     backgroundColor = blue,
-                    modifier = Modifier.padding(5.dp)
+                    modifier = Modifier.padding(10.dp)
                 ) {
                     Icon(Icons.Default.Add, "")
                 }
@@ -69,9 +89,9 @@ fun SurveyQuestionListItem(viewModel: AddSurveyQuestionViewModel) {
     ) {
         Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
             Spacer(modifier = Modifier.padding(vertical = 20.dp))
-            TextField(
+            OutlinedTextField(
                 value = title,
-                onValueChange = { title = it },
+                onValueChange = {  if (it.length <= Constants.MAX_SURVEY_TITLE_LETTERS) title = it },
                 label = { Text(text = "Add question title") }
             )
             Spacer(modifier = Modifier.padding(vertical = 20.dp))
@@ -99,7 +119,18 @@ fun SurveyQuestionNestedListItem() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 15.dp)
+            .background(Color.White)
     ) {
-        TextField(value = description, onValueChange = { description = it })
+        TextField(
+            value = description,
+            onValueChange = {
+                if (it.length <= Constants.MAX_SURVEY_QUESTION_LETTERS) description = it
+            },
+            label = {
+                Text(text = "Enter answer option")
+            },
+            singleLine = true,
+
+            )
     }
 }

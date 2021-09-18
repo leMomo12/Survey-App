@@ -56,11 +56,15 @@ class LoginViewModel @Inject constructor(
         _passwordVisibility.value = isVisible
     }
 
+    fun setStateIsFinished(isFinished: Boolean) {
+        _state.value = LoginState(isFinished = true)
+    }
+
     fun signInWithEmailAndPassword(email: String, password: String) {
-        viewModelScope.launch {
+
             when {
-                email == "" -> {
-                    if (password == "") {
+                email.trim() == "" -> {
+                    if (password.trim() == "") {
                         _isErrorEmail.value = true
                         _isErrorPassword.value = true
                     } else {
@@ -68,7 +72,7 @@ class LoginViewModel @Inject constructor(
                         _isErrorPassword.value = false
                     }
                 }
-                password == "" -> {
+                password.trim() == "" -> {
                     _isErrorPassword.value = true
                     _isErrorEmail.value = false
                 }
@@ -95,7 +99,7 @@ class LoginViewModel @Inject constructor(
                     }.launchIn(viewModelScope)
                 }
             }
-        }
+
     }
 
 }
