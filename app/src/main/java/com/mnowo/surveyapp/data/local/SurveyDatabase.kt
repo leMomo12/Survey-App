@@ -1,13 +1,13 @@
-package com.mnowo.surveyapp.data.room
+package com.mnowo.surveyapp.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.mnowo.surveyapp.data.room.dao.SurveyDao
 import com.mnowo.surveyapp.domain.model.NewSurvey
+import com.mnowo.surveyapp.domain.model.SurveyQuestion
 
 @Database(
-    entities = [NewSurvey::class],
-    version = 1,
+    entities = [NewSurvey::class, SurveyQuestion::class],
+    version = 4,
     exportSchema = false
 )
 abstract class SurveyDatabase : RoomDatabase() {

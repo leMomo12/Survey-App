@@ -29,7 +29,7 @@ fun NewSurveyScreen(navController: NavController, viewModel: NewSurveyViewModel 
         Font(R.font.istokweb_regular, FontWeight.Medium),
     )
 
-    if(viewModel.successfulAdded.value) {
+    if (viewModel.successfulAdded.value) {
         viewModel.setSuccessFullAdded(false)
         navController.navigate(Screen.AddSurveyQuestionScreen.route)
     }
@@ -71,7 +71,7 @@ fun NewSurveyScreen(navController: NavController, viewModel: NewSurveyViewModel 
                         Text(text = "Enter survey title")
                     },
                     leadingIcon = {
-                                  Icon(Icons.Default.Title, "")
+                        Icon(Icons.Default.Title, "")
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -99,7 +99,12 @@ fun NewSurveyScreen(navController: NavController, viewModel: NewSurveyViewModel 
                 )
                 Spacer(modifier = Modifier.padding(vertical = 40.dp))
                 Button(
-                    onClick = { viewModel.checkInputs(viewModel.surveyTitle.value, viewModel.surveyDescription.value) },
+                    onClick = {
+                        viewModel.checkInputs(
+                            viewModel.surveyTitle.value,
+                            viewModel.surveyDescription.value
+                        )
+                    },
                     Modifier
                         .fillMaxWidth()
                         .padding(start = 20.dp, end = 20.dp)
@@ -107,5 +112,7 @@ fun NewSurveyScreen(navController: NavController, viewModel: NewSurveyViewModel 
                     Text(text = "Next Step", fontFamily = istokweb, fontSize = 25.sp)
                 }
             }
-        })
+        }
+    )
 }
+

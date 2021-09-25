@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Survey App</string>
+    <string name="unexpected_error">An unexpected error occurred</string>
 </resources>

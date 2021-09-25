@@ -176,7 +176,6 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
                 .padding(bottom = 20.dp), contentAlignment = Center
         ) {
 
-
             if (state.isLoading) {
                 d("Login", "isLoading")
                 viewModel.setUiEnable(false)

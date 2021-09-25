@@ -3,10 +3,10 @@ package com.mnowo.surveyapp.di
 import android.content.Context
 import androidx.room.Room
 import com.mnowo.surveyapp.common.Constants
-import com.mnowo.surveyapp.data.remote.firebase.FirebaseDb
+import com.mnowo.surveyapp.data.remote.remote_datasource.FirebaseDb
 import com.mnowo.surveyapp.data.repository.SurveyRepositoryImpl
-import com.mnowo.surveyapp.data.room.SurveyDatabase
-import com.mnowo.surveyapp.data.room.dao.SurveyDao
+import com.mnowo.surveyapp.data.local.SurveyDatabase
+import com.mnowo.surveyapp.data.local.SurveyDao
 import com.mnowo.surveyapp.domain.repository.SurveyRepository
 import dagger.Module
 import dagger.Provides

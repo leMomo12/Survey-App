@@ -14,7 +14,7 @@ import com.mnowo.surveyapp.presentation.SplashScreen.SplashScreen
 
 @Composable
 fun Navigation(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = Screen.LoginScreen.route) {
+    NavHost(navController = navController, startDestination = Screen.SplashScreen.route) {
         composable(Screen.SplashScreen.route) {
             SplashScreen(navController)
         }
