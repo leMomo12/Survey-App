@@ -72,24 +72,31 @@ class AddSurveyQuestionViewModel @Inject constructor(
     }
 
     fun addSurvey(surveyQuestion: SurveyQuestion) = viewModelScope.launch {
-        addSurveyQuestionUseCase(surveyQuestion).onEach {
-            when (it) {
-                is Resource.Loading -> {
-                    _state.value = AddSurveyQuestionState(isLoading = true)
-                    d("AddSurvey", "Loading")
+
+        if (surveyQuestion.questionAnswers.isBlank() || surveyQuestion.questionAnswers.trim() == "") {
+            d("AddSurvey", "Field empty ")
+        } else if (surveyQuestion.questionTitle.isBlank() || surveyQuestion.questionTitle.trim() == "") {
+            d("AddSurvey", "Title empty")
+        } else {
+            addSurveyQuestionUseCase(surveyQuestion).onEach {
+                when (it) {
+                    is Resource.Loading -> {
+                        _state.value = AddSurveyQuestionState(isLoading = true)
+                        d("AddSurvey", "Loading")
+                    }
+                    is Resource.Error -> {
+                        _state.value = AddSurveyQuestionState(
+                            error = it.message ?: "An unexpected error occurred"
+                        )
+                        d("AddSurvey", "Error ${it.message}")
+                    }
+                    is Resource.Success -> {
+                        d("AddSurvey", "Success")
+                        _state.value = AddSurveyQuestionState(isAdded = true)
+                    }
                 }
-                is Resource.Error -> {
-                    _state.value = AddSurveyQuestionState(
-                        error = it.message ?: "An unexpected error occurred"
-                    )
-                    d("AddSurvey", "Error ${it.message}")
-                }
-                is Resource.Success -> {
-                    d("AddSurvey", "Success")
-                    _state.value = AddSurveyQuestionState(isAdded = true)
-                }
-            }
-        }.launchIn(viewModelScope)
+            }.launchIn(viewModelScope)
+        }
 
     }
 

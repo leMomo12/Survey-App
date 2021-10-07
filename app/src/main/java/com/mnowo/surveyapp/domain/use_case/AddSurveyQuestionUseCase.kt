@@ -15,12 +15,19 @@ class AddSurveyQuestionUseCase @Inject constructor(
 
     suspend operator fun invoke(surveyQuestion: SurveyQuestion): Flow<Resource<Boolean>> = flow {
         try {
-            d("AddSurvey", "questionTitle: ${surveyQuestion.questionTitle} , questionAnswer: ${surveyQuestion.questionAnswers}")
             emit(Resource.Loading<Boolean>())
-            surveyRepository.addSurveyQuestion(surveyQuestion)
-            emit(Resource.Success<Boolean>(true))
+            d(
+                "AddSurvey",
+                "questionTitle: ${surveyQuestion.questionTitle} , questionAnswer: ${surveyQuestion.questionAnswers}"
+            )
+                surveyRepository.addSurveyQuestion(surveyQuestion)
+                emit(Resource.Success<Boolean>(true))
         } catch (e: Exception) {
-            emit(Resource.Error<Boolean>(message = e.localizedMessage ?: "An unexpected error occurred"))
+            emit(
+                Resource.Error<Boolean>(
+                    message = e.localizedMessage ?: "An unexpected error occurred"
+                )
+            )
         }
     }
 }

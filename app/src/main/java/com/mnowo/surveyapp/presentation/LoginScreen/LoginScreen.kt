@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.autofill.AutofillType
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -33,6 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.navArgument
 import com.mnowo.surveyapp.R
+import com.mnowo.surveyapp.common.TestTags
 import com.mnowo.surveyapp.presentation.util.Screen
 import kotlinx.coroutines.launch
 
@@ -92,7 +94,8 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 20.dp, end = 20.dp),
+                    .padding(start = 20.dp, end = 20.dp)
+                    .testTag(TestTags.LOGIN_EMAIL),
                 label = {
                     Text(text = "Enter E-Mail", fontWeight = FontWeight.Light)
                 },
@@ -113,7 +116,8 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 20.dp, end = 20.dp),
+                    .padding(start = 20.dp, end = 20.dp)
+                    .testTag(TestTags.LOGIN_PASSWORD),
                 label = {
                     Text(text = "Enter password", fontWeight = FontWeight.Light)
                 },
@@ -145,7 +149,8 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
                 },
                 Modifier
                     .fillMaxWidth()
-                    .padding(start = 20.dp, end = 20.dp),
+                    .padding(start = 20.dp, end = 20.dp)
+                    .testTag(TestTags.LOGIN_BUTTON),
                 enabled = viewModel.uiEnable.value
             ) {
                 Text(text = "Sign in", fontFamily = istokweb, fontSize = 25.sp)
@@ -154,7 +159,8 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
             Text(text = "Don't have an account?")
             TextButton(
                 onClick = { navController.navigate(Screen.RegisterScreen.route) },
-                enabled = viewModel.uiEnable.value
+                enabled = viewModel.uiEnable.value,
+                modifier = Modifier.testTag(TestTags.LOGIN_SCREEN_TEXT_BUTTON)
             ) {
                 Text(text = "Register here")
             }
@@ -179,7 +185,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
             if (state.isLoading) {
                 d("Login", "isLoading")
                 viewModel.setUiEnable(false)
-                CircularProgressIndicator()
+                CircularProgressIndicator(modifier = Modifier.testTag(TestTags.LOGIN_PROGRESSBAR))
             } else {
                 viewModel.setUiEnable(true)
             }
